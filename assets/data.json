@@ -1,0 +1,130 @@
+[
+  {
+    "id": "2",
+    "name": "Marchew",
+    "imageUrl": "https://cdn.mos.cms.futurecdn.net/VmDx3obMsrncNiph4Lc5kW-1024-80.jpg",
+    "description": "Marchew to warzywo, które potrzebuje głębokiej, piaszczystej gleby do rozwoju długich korzeni.",
+    "growingSeason": "Wiosna - Jesień",
+    "careInstructions": [
+      "Regularnie podlewać, ale nie dopuszczać do przemoczenia gleby.",
+      "Usuń chwasty, które mogą blokować dostęp do światła.",
+      "Nawozić raz w miesiącu nawozem organicznym."
+    ],
+    "wateringFrequencyDays": 5,
+    "sunlightNeeds": "Średnie",
+    "daysToMaturity": 120,
+    "soilType": "Piaszczysta, dobrze przepuszczalna",
+    "commonPests": [
+      "Larwy muchówek",
+      "Nicienie",
+      "Ślimaki"
+    ],
+    "plantingDate": "2025-04-15",
+    "reminderWatering": true,
+    "reminderCare": true,
+    "reminderFertilizing": true,
+    "notes": "Marchew najlepiej rośnie na głębokiej glebie, unikaj gleby zbyt wilgotnej."
+  },
+  {
+    "id": "3",
+    "name": "Ogórek",
+    "imageUrl": "https://images.unsplash.com/photo-1518568403628-df55701ade9e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGN1Y3VtYmVyfGVufDB8fDB8fHww",
+    "description": "Ogórek jest rośliną, która lubi wilgotne środowisko i ciepło. Regularne podlewanie jest kluczowe.",
+    "growingSeason": "Wiosna - Lato",
+    "careInstructions": [
+      "Podlewać codziennie, szczególnie podczas upałów.",
+      "Usuwać boczne pędy, aby roślina nie marnowała energii.",
+      "Nawozić co 10 dni nawozem bogatym w azot."
+    ],
+    "wateringFrequencyDays": 2,
+    "sunlightNeeds": "Wysokie",
+    "daysToMaturity": 60,
+    "soilType": "Lekka, żyzna gleba",
+    "commonPests": [
+      "Przędziorki",
+      "Aphids",
+      "Cucumber beetles"
+    ],
+    "plantingDate": "2025-04-10",
+    "reminderWatering": true,
+    "reminderCare": true,
+    "reminderFertilizing": true,
+    "notes": "Ogórek wymaga regularnego podlewania i dużej ilości światła słonecznego."
+  },
+  {
+    "id": "4",
+    "name": "Bazylia",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1725899523683-838307ab1552?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "description": "Bazylia to aromatyczna roślina, która świetnie sprawdza się w doniczkach na parapecie.",
+    "growingSeason": "Wiosna - Lato",
+    "careInstructions": [
+      "Podlewać umiarkowanie, nie dopuszczając do przemoczenia gleby.",
+      "Usuwać przekwitłe kwiaty, aby roślina mogła się rozwijać.",
+      "Nawozić co 2 tygodnie nawozem organicznym."
+    ],
+    "wateringFrequencyDays": 4,
+    "sunlightNeeds": "Wysokie",
+    "daysToMaturity": 30,
+    "soilType": "Lekka, dobrze przepuszczalna gleba",
+    "commonPests": [
+      "Aphids",
+      "Slugs",
+      "Whitefly"
+    ],
+    "plantingDate": "2025-04-05",
+    "reminderWatering": true,
+    "reminderCare": true,
+    "reminderFertilizing": true,
+    "notes": "Bazylia uwielbia ciepło i słońce, idealnie rośnie w ciepłych warunkach."
+  },
+  {
+    "id": "5",
+    "name": "Rzodkiewka",
+    "imageUrl": "https://images.unsplash.com/photo-1560252117-15c5d204a4a8?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "description": "Rzodkiewka jest szybko rosnącym warzywem, które można zbierać już po kilku tygodniach od wysiewu.",
+    "growingSeason": "Wiosna - Lato",
+    "careInstructions": [
+      "Podlewać regularnie, nie dopuszczając do przesuszenia gleby.",
+      "Usuwaj chwasty, aby nie ograniczały dostępu światła.",
+      "Nawozić co 3 tygodnie nawozem organicznym."
+    ],
+    "wateringFrequencyDays": 3,
+    "sunlightNeeds": "Średnie",
+    "daysToMaturity": 30,
+    "soilType": "Lekka, przepuszczalna gleba",
+    "commonPests": [
+      "Pchełki ziemne",
+      "Ślimaki"
+    ],
+    "plantingDate": "2025-04-10",
+    "reminderWatering": true,
+    "reminderCare": false,
+    "reminderFertilizing": false,
+    "notes": "Rzodkiewki najlepiej rosną na chłodniejszych glebach, nie lubią upałów."
+  },
+  {
+    "id": "6",
+    "name": "Cebula",
+    "imageUrl": "https://images.unsplash.com/photo-1580201092675-a0a6a6cafbb1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "description": "Cebula to jedno z podstawowych warzyw w polskich ogrodach, które dobrze rośnie w chłodniejszych porach roku.",
+    "growingSeason": "Wiosna - Lato",
+    "careInstructions": [
+      "Podlewać regularnie, unikając nadmiernego moczenia gleby.",
+      "Usuwać chwasty, aby zapewnić cebuli odpowiednią przestrzeń.",
+      "Nawozić raz w miesiącu nawozem bogatym w azot."
+    ],
+    "wateringFrequencyDays": 4,
+    "sunlightNeeds": "Średnie",
+    "daysToMaturity": 120,
+    "soilType": "Żyzna, dobrze przepuszczalna",
+    "commonPests": [
+      "Cebulowa muchówka",
+      "Ślimaki"
+    ],
+    "plantingDate": "2025-04-01",
+    "reminderWatering": true,
+    "reminderCare": false,
+    "reminderFertilizing": true,
+    "notes": "Cebula preferuje glebę o neutralnym pH i regularne podlewanie."
+  }
+]
