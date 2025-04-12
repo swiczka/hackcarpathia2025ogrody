@@ -1,5 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+// This is a standalone detail page for a vegetable
+// with hard-coded data for demonstration purposes
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +20,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const VegetableDetailPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -26,33 +30,66 @@ class VegetableDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String name = "Tomato";
-    const String imageUrl = "https://via.placeholder.com/400x200";
+    // Hard-coded vegetable data based on the provided JSON structure
+    const String id = "tom-01";
+    const String name = "Tomato - Roma";
+    const String imageUrl = "https://images.unsplash.com/photo-1607305387299-a3d9611cd469?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
     const String description =
-        "Tomatoes are the fruit of the plant Solanum lycopersicum, commonly known as a tomato plant. "
-        "They are widely grown and have become a staple food in many cuisines around the world. "
-        "They are rich in lycopene, which has been linked to many health benefits, including reduced "
-        "risk of heart disease and cancer. They are also a great source of vitamin C, potassium, folate, and vitamin K.";
+        "Roma tomatoes are egg- or pear-shaped and used for tomato paste, tomato sauce, and canning. "
+        "They have fewer seeds and a dense, meaty flesh that makes them ideal for processing. "
+        "They are determinate tomatoes, which means they grow to a certain height, then flower and set all their fruit within a short period. "
+        "They are excellent for container gardening and urban spaces due to their compact growth habit.";
     const String growingSeason = "Summer";
     const List<String> careInstructions = [
-      "Plant in well-draining soil",
-      "Water deeply but infrequently",
-      "Provide support for tall varieties",
-      "Pinch off suckers for indeterminate varieties",
-      "Fertilize every 4-6 weeks during growing season",
-      "Harvest when fruits are firm and fully colored"
+      "Plant in well-draining soil after last frost",
+      "Space plants 24-36 inches apart",
+      "Water deeply 1-2 times per week depending on weather",
+      "Provide support with stakes or cages",
+      "Prune suckers for better air circulation",
+      "Apply balanced fertilizer every 2-3 weeks",
+      "Monitor for signs of blight or pest damage"
     ];
-    const int wateringFrequencyDays = 2;
+    const int wateringFrequencyDays = 3;
     const String sunlightNeeds = "Full sun (6-8 hours daily)";
-    const int daysToMaturity = 70;
+    const int daysToMaturity = 75;
     const String soilType = "Well-draining, slightly acidic soil (pH 6.0-6.8)";
-    const List<String> commonPests = ["Aphids", "Tomato Hornworms", "Whiteflies", "Spider Mites"];
+    const List<String> commonPests = ["Early Blight", "Late Blight", "Aphids", "Tomato Hornworms", "Fusarium Wilt"];
+    final DateTime plantingDate = DateTime(2025, 3, 15); // March 15, 2025
+    const bool reminderWatering = true;
+    const bool reminderCare = true;
+    const bool reminderFertilizing = false;
+    const String notes = "These Roma tomatoes were started from seeds purchased from Baker Creek Heirloom Seeds. "
+        "They've been growing well despite a cooler than normal spring. I've had good success with this variety "
+        "in previous years, especially for making tomato sauce. For next season, consider planting 2 weeks earlier "
+        "and using black plastic mulch to warm soil more quickly.";
+
+    // Format the planting date
+    final formattedDate = DateFormat('MMMM d, yyyy').format(plantingDate);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vegetable Detail'),
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Edit feature coming soon')),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Delete feature coming soon')),
+              );
+            },
+          ),
+        ],
       ),
+      // Using SingleChildScrollView to make entire content scrollable
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,6 +106,7 @@ class VegetableDetailPage extends StatelessWidget {
               ),
             ),
 
+            // Content padding
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -78,11 +116,25 @@ class VegetableDetailPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        name,
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              name,
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'ID: $id',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Chip(
@@ -93,15 +145,61 @@ class VegetableDetailPage extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
-                  const Text(
-                    'Description',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  // Planting date and reminders
+                  Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Planted: $formattedDate',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Reminders:',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 8,
+                            children: [
+                              ReminderChip(
+                                label: 'Watering',
+                                isActive: reminderWatering,
+                                icon: Icons.water_drop,
+                              ),
+                              ReminderChip(
+                                label: 'Care',
+                                isActive: reminderCare,
+                                icon: Icons.yard,
+                              ),
+                              ReminderChip(
+                                label: 'Fertilizing',
+                                isActive: reminderFertilizing,
+                                icon: Icons.eco,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+
+                  const SizedBox(height: 24),
+
+                  // Description
+                  const SectionHeader(title: 'Description'),
                   const SizedBox(height: 8),
                   const Text(
                     description,
@@ -110,21 +208,52 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  const Text(
-                    'Growing Information',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  // Notes
+                  const SectionHeader(title: 'Notes'),
+                  const SizedBox(height: 8),
+                  Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            notes,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 8),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton.icon(
+                              icon: const Icon(Icons.edit_note),
+                              label: const Text('Edit Notes'),
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Edit Notes feature coming soon')),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+
+                  const SizedBox(height: 24),
+
+                  // Growing information
+                  const SectionHeader(title: 'Growing Information'),
                   const SizedBox(height: 16),
 
+                  // Growing info card
                   Card(
                     elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
+                          // Watering needs
                           const InfoRow(
                             icon: Icons.water_drop,
                             iconColor: Colors.blue,
@@ -134,6 +263,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                           const Divider(height: 24),
 
+                          // Sunlight needs
                           const InfoRow(
                             icon: Icons.wb_sunny,
                             iconColor: Colors.orange,
@@ -143,6 +273,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                           const Divider(height: 24),
 
+                          // Days to maturity
                           InfoRow(
                             icon: Icons.calendar_today,
                             iconColor: Colors.purple,
@@ -152,6 +283,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                           const Divider(height: 24),
 
+                          // Soil type
                           const InfoRow(
                             icon: Icons.landscape,
                             iconColor: Colors.brown,
@@ -165,15 +297,57 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  const Text(
-                    'Care Instructions',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  // Harvest date estimate
+                  Card(
+                    elevation: 2,
+                    color: Colors.green[50],
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.event_available,
+                            color: Colors.green[700],
+                            size: 36,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Estimated Harvest',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green[700],
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  DateFormat('MMMM d, yyyy').format(
+                                      plantingDate.add(Duration(days: daysToMaturity))
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.green[900],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+
+                  const SizedBox(height: 24),
+
+                  // Care instructions
+                  const SectionHeader(title: 'Care Instructions'),
                   const SizedBox(height: 16),
 
+                  // List of care instructions
                   Card(
                     elevation: 2,
                     child: Padding(
@@ -204,15 +378,11 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  const Text(
-                    'Common Pests',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  // Common pests
+                  const SectionHeader(title: 'Common Pests & Diseases'),
                   const SizedBox(height: 16),
 
+                  // Pest chips
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -233,22 +403,50 @@ class VegetableDetailPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ActionButton(
-                        icon: Icons.add_task,
-                        label: 'Add to My Garden',
-                        color: Colors.green,
+                        icon: Icons.water_drop,
+                        label: 'Log Watering',
+                        color: Colors.blue,
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Added to Garden')),
+                            const SnackBar(content: Text('Watering logged')),
                           );
                         },
                       ),
                       ActionButton(
+                        icon: Icons.photo_camera,
+                        label: 'Add Photo',
+                        color: Colors.green,
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Photo feature coming soon')),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ActionButton(
                         icon: Icons.calendar_month,
                         label: 'Set Reminders',
-                        color: Colors.blue,
+                        color: Colors.purple,
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Reminder feature coming soon')),
+                          );
+                        },
+                      ),
+                      ActionButton(
+                        icon: Icons.eco,
+                        label: 'Log Fertilizing',
+                        color: Colors.amber[800]!,
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Fertilizing logged')),
                           );
                         },
                       ),
@@ -264,6 +462,28 @@ class VegetableDetailPage extends StatelessWidget {
   }
 }
 
+// Helper widget for section headers
+class SectionHeader extends StatelessWidget {
+  final String title;
+
+  const SectionHeader({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
+
+// Helper widget for information rows
 class InfoRow extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -309,7 +529,7 @@ class InfoRow extends StatelessWidget {
   }
 }
 
-
+// Action button widget
 class ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -334,6 +554,36 @@ class ActionButton extends StatelessWidget {
         backgroundColor: color,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+    );
+  }
+}
+
+// Reminder chip widget
+class ReminderChip extends StatelessWidget {
+  final String label;
+  final bool isActive;
+  final IconData icon;
+
+  const ReminderChip({
+    Key? key,
+    required this.label,
+    required this.isActive,
+    required this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      avatar: Icon(
+        icon,
+        size: 16,
+        color: isActive ? Colors.white : Colors.grey,
+      ),
+      label: Text(label),
+      backgroundColor: isActive ? Colors.blue : Colors.grey[200],
+      labelStyle: TextStyle(
+        color: isActive ? Colors.white : Colors.grey[600],
       ),
     );
   }
