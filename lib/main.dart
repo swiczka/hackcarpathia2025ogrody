@@ -7,16 +7,24 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Mniam Match',
       theme: ThemeData(
-
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        scaffoldBackgroundColor: Colors.grey[300],
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.green,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Mniam Match'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -31,37 +39,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _selectedPage = 'Strona główna';
 
-  void _incrementCounter() {
+  void _onSelectPage(String page) {
     setState(() {
-      _counter++;
+      _selectedPage = page;
     });
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.favorite),
+              title: const Text('Strona Główna'),
+              onTap: () => _onSelectPage('Matches'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Rośliny'),
+              onTap: () => _onSelectPage('Partner'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.smartphone),
+              title: const Text('Dodaj Nową Roślinkę!'),
+              onTap: () => _onSelectPage('One phone'),
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Exit'),
+              onTap: () => _onSelectPage('Exit'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body: Center(
+        child: Text(
+          'Aktualna strona: $_selectedPage',
+          style: const TextStyle(fontSize: 24),
+        ),
       ),
     );
   }
