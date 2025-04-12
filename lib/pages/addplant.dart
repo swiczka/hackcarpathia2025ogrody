@@ -67,6 +67,7 @@ class _AddPlantState extends State<AddPlant> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _plantingDate,
+      cancelText: "",
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
     );
@@ -76,6 +77,34 @@ class _AddPlantState extends State<AddPlant> {
       });
     }
   }
+
+  //opis osoby habystycznie uprawiające ogródek, rolnicy mający poniżej 10ha, mający powyżej 10ha,
+  //20-30,30-40,40-50.
+  /*
+  Z WIEDZY JURORA
+  *  niewystarczająco szybka reakcja na zagrożenia dla pola
+  * wiedza przekazywana pokolniewo
+  * szkoły rolncizne
+  * sprzedawcy nasion i środków
+  * lokalne ośrodki doradztwa, prasa, przeglądy,
+  * wiedza przekazywana pokoleniowo, instasgram, fora internetowe, kanały na yt, fora w ramach grupy zawodowej - hobbyści
+  * hobbysci - zainteresowani takim narzędziem, średni nie traktowali tego poważnie, bardzo duzi będą zainteresowani w przyszłości
+  * hobbyści lubią pomidory ale sprawia im dużo problemów PROBLEM POMIDORÓW CHORUJĄ, psycha siadała bo im umierał pomidorki
+  * skalowanie nie interesuje ich
+  * borówki amerykańskie - dużo w Polsce ich jest, do nich wdrożyć można
+  * rolnicy przedsiebiorcy - kazda nowa techinike chca mocno wdrazac, bo jak im mało wzrośnie efektywność to dalej dużo
+  * hobbysci - nieprzewidywaknoisc zjawisk, vchoroby, brak zrodel wiedzy, wskazowki dotyczace pielegnacji, chorob,
+  * dostęp do sprawdzoengo źrodla wiedzy, nieprzychulnosc innyhc hybbystow w dzielenuu sie wiedza
+  * gospodarstwo rodzinne - nieprzewidywalnosc azjwiawki pogodowych, "co da najwiekszy zysk w danym roku" - potrzeby:
+  * pomoc w dotarciu do nowych nabywcow, dostep do sprawdzonego źródla iedzy,
+  * oni potrzbeuja chemii, którą my polecimy. wprowadzamy sponosoring chemii. U nas można zamowic chemie i kroimy procnet.
+  * Bolączka: dzialalnosc na granicy oplocalnosci
+  * Duzi rolnicy, wyzwania: nieprzewidwalnosc zjawisk pogodowych, ogrom zadań, !!!, planowanie praw u w==uwzglednieme upraw,
+  * przypominanie o zabiegach, wsparcie wiedzy o zwierzetach,
+  * bolaczki: wysokie koszty, niskie ceny dóbr, choroby roślin
+  * ocena konceptu: 1sze wrażenie wwoluje efekt wow, mało tam nowości jest.
+  * w posovnej apliakcji ale gorszej mowili ze fajna wiec my bedziemy miec lepiej
+  * */
 
   // Metoda do znajdowania szczegółów wybranej rośliny
   Plant? _getSelectedPlantDetails() {
@@ -306,6 +335,7 @@ class _AddPlantState extends State<AddPlant> {
                             notes: _notes ?? "",
                           );
                           UserPlantsStorage.addPlant(newPlant);
+                          Navigator.pop(context);
 
                         } catch(error){
                           ScaffoldMessenger.of(context).showSnackBar(
