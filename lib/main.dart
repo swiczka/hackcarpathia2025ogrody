@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MyHomePage(title: 'Strona główna'),
+      home: const MyHomePage(title: '🥕 Ogródek'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -66,7 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 32,
+          ),
+        ),
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: ClipRRect(
