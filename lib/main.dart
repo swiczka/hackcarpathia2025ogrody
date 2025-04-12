@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackcarpathia2025ogrody/pages/addplant.dart';
+import 'package:hackcarpathia2025ogrody/pages/calendar.dart';
 import 'package:hackcarpathia2025ogrody/pages/scanner.dart';
 
 void main() {
@@ -45,10 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   final List<Widget> _pages = [
-    const Text('Aparat'),
+    const Scanner(),
     const Text('Rośliny'),
     const HomePage(),
-    const Text('Kalendarz'),
+    CalendarPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -107,7 +108,6 @@ class HomePage extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
