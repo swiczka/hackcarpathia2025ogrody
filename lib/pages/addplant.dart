@@ -1,43 +1,67 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
+
+import '../models/plant.dart';
+
+
+
+class PlantService {
+  // Załaduj dane roślin z pliku JSON
+  static Future<List<Plant>> loadPlants() async {
+    final String jsonString = await rootBundle.loadString('assets/data.json');
+    final List<dynamic> jsonData = json.decode(jsonString);
+    return jsonData.map((plantJson) => Plant.fromJson(plantJson)).toList();
+  }
+}
 
 class AddPlant extends StatefulWidget {
   const AddPlant({Key? key}) : super(key: key);
 
   @override
-  _AddPlantFormState createState() => _AddPlantFormState();
+  _AddPlantState createState() => _AddPlantState();
 }
 
-class _AddPlantFormState extends State<AddPlant> {
+class _AddPlantState extends State<AddPlant> {
   final _formKey = GlobalKey<FormState>();
 
   // Zmienne formularza
-  String? _selectedPlant;
+  String? _selectedPlantId;
   DateTime _plantingDate = DateTime.now();
   bool _reminderWatering = false;
   bool _reminderCare = false;
   bool _reminderFertilizing = false;
   String _notes = '';
 
-  // Lista przykładowych roślin do wyboru
-  final List<String> _plantTypes = [
-    'Pomidor',
-    'Ogórek',
-    'Marchew',
-    'Truskawka',
-    'Papryka',
-    'Sałata',
-    'Rzodkiewka',
-    'Cebula',
-    'Pietruszka',
-    'Bazylia',
-    'Mięta',
-    'Róża',
-    'Tulipan',
-    'Lawenda',
-  ];
+  // Lista roślin z JSON
+  List<Plant> _plants = [];
+  bool _isLoading = true;
 
-  // Metoda wyświetlająca wybór daty
+  @override
+  void initState() {
+    super.initState();
+    _loadPlantsData();
+  }
+
+  Future<void> _loadPlantsData() async {
+    try {
+      final plants = await PlantService.loadPlants();
+      setState(() {
+        _plants = plants;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Błąd ładowania danych: $e')),
+      );
+    }
+  }
+
+  // Metoda wyboru daty
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -52,8 +76,43 @@ class _AddPlantFormState extends State<AddPlant> {
     }
   }
 
+  // Metoda do znajdowania szczegółów wybranej rośliny
+  Plant? _getSelectedPlantDetails() {
+    if (_selectedPlantId == null) return null;
+    try {
+      return _plants.firstWhere((plant) => plant.id == _selectedPlantId);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Metoda do wypełniania formularza danymi wybranej rośliny
+  void _populateFormWithPlantData(Plant plant) {
+    setState(() {
+      _reminderWatering = plant.reminderWatering;
+      _reminderCare = plant.reminderCare;
+      _reminderFertilizing = plant.reminderFertilizing;
+      _notes = plant.notes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Jeśli dane są ładowane, pokaż wskaźnik ładowania
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Dodaj nową roślinę'),
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    // Szczegóły wybranej rośliny
+    Plant? selectedPlant = _getSelectedPlantDetails();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dodaj nową roślinę'),
@@ -72,16 +131,22 @@ class _AddPlantFormState extends State<AddPlant> {
                     labelText: 'Wybierz gatunek rośliny',
                     border: OutlineInputBorder(),
                   ),
-                  value: _selectedPlant,
-                  items: _plantTypes.map((String plant) {
+                  value: _selectedPlantId,
+                  items: _plants.map((Plant plant) {
                     return DropdownMenuItem<String>(
-                      value: plant,
-                      child: Text(plant),
+                      value: plant.id,
+                      child: Text(plant.name),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      _selectedPlant = newValue;
+                      _selectedPlantId = newValue;
+
+                      // Jeśli wybrano roślinę, pobierz jej szczegóły
+                      if (newValue != null) {
+                        Plant plant = _plants.firstWhere((p) => p.id == newValue);
+                        _populateFormWithPlantData(plant);
+                      }
                     });
                   },
                   validator: (value) {
@@ -93,6 +158,52 @@ class _AddPlantFormState extends State<AddPlant> {
                 ),
 
                 const SizedBox(height: 16),
+
+                // Informacje o wybranej roślinie
+                if (selectedPlant != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Zdjęcie rośliny
+                        if (selectedPlant.imageUrl.isNotEmpty)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              selectedPlant.imageUrl,
+                              height: 150,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+
+                        const SizedBox(height: 8),
+
+                        // Opis rośliny
+                        Text(
+                          selectedPlant.description,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // Podstawowe informacje
+                        _buildInfoRow('Sezon wzrostu:', selectedPlant.growingSeason),
+                        _buildInfoRow('Podlewanie co:', '${selectedPlant.wateringFrequencyDays} dni'),
+                        _buildInfoRow('Potrzeby słoneczne:', selectedPlant.sunlightNeeds),
+                        _buildInfoRow('Dni do dojrzałości:', '${selectedPlant.daysToMaturity}'),
+                        _buildInfoRow('Typ gleby:', selectedPlant.soilType),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+                ],
 
                 // Wybór daty posadzenia
                 InkWell(
@@ -159,6 +270,7 @@ class _AddPlantFormState extends State<AddPlant> {
                     border: OutlineInputBorder(),
                     alignLabelWithHint: true,
                   ),
+                  initialValue: _notes,
                   maxLines: 5,
                   onChanged: (value) {
                     _notes = value;
@@ -173,7 +285,7 @@ class _AddPlantFormState extends State<AddPlant> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Tutaj dodać kod zapisujący dane
+                        // Tutaj kod zapisujący dane
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Roślina została dodana')),
                         );
@@ -189,6 +301,26 @@ class _AddPlantFormState extends State<AddPlant> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // Helper do wyświetlania informacji o roślinie
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(value),
+          ),
+        ],
       ),
     );
   }
