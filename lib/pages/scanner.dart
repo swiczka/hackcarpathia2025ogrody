@@ -41,13 +41,6 @@ class _ScannerState extends State<Scanner>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Skaner roślin'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
       body: _buildCameraUI(),
     );
   }
