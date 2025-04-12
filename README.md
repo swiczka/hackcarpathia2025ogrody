@@ -1,16 +1,14 @@
-# hackcarpathia2025ogrody
+# Ogrodek
 
-ogrodeo
+Twój asystent zarządzania oraz dbania o warzywniak!
 
-## Getting Started
+## Jak pobrać projekt na maszynę?
 
-This project is a starting point for a Flutter application.
+Należy posiadać zainstalowane:
+- Android Studio w wersji Meerkat
+- Dart SDK w wersji 3.7.0.
+- Flutter w wersji 3.29.1
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Sklonować repozytorium
+2. Pobrać zależności (pub get).
+3. Projekt powinien być gotowy do uruchomienia na emulatorze lub telefonie.
