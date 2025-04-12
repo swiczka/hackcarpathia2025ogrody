@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';
 import 'package:hackcarpathia2025ogrody/pages/addplant.dart';
 import 'package:hackcarpathia2025ogrody/pages/scanner.dart';
+import 'package:hackcarpathia2025ogrody/pages/plantdetails.dart';
+import 'package:hackcarpathia2025ogrody/pages/allplants.dart';
+import 'package:hackcarpathia2025ogrody/models/plant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,13 +45,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  int _selectedIndex = 2;  
-
+  int _selectedIndex = 2;
 
   final List<Widget> _pages = [
     const Text('Aparat'),
-    const Text('Rośliny'),
+    const PlantsPage(),
     const HomePage(),
     const Text('Kalendarz'),
   ];
@@ -65,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
@@ -74,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           onTap: _onItemTapped,
           selectedItemColor: Colors.green,
           unselectedItemColor: Colors.grey,
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.camera),
               label: 'Skanuj!',
@@ -90,7 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month),
               label: 'Kalendarz',
-
             ),
           ],
         ),
@@ -99,48 +101,395 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Plant> plants = [];
+  bool isLoading = true;
+  String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPlants();
+  }
+
+  Future<void> _loadPlants() async {
+    try {
+      final String jsonData = await rootBundle.loadString('assets/data.json');
+
+      final List<dynamic> jsonList = json.decode(jsonData);
+
+      final loadedPlants = jsonList.map((item) => Plant.fromJson(item)).toList();
+
+      setState(() {
+        plants = loadedPlants;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        error = 'Error loading plant data: $e';
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (error != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 60, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(error!, textAlign: TextAlign.center),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _loadPlants,
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Container(
-      width: double.infinity,
-      height: double.infinity,
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 8),
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    offset: Offset(0, 2),
-                    blurRadius: 4,
-                  ),
-                ],
+            const Text(
+              'Mój ogród',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              height: 120,
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: plants.length,
+                itemBuilder: (context, index) {
+                  return PlantCard(plant: plants[index]);
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Add new plant button
+            SizedBox(
               width: double.infinity,
-              child: Center(
-                child: Text(
-                  'RURA 1',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  // Navigate to add plant page
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Add plant feature coming soon')),
+                  );
+                },
+                icon: const Icon(Icons.add),
+                label: const Text('Dodaj nową roślinę'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class PlantCard extends StatelessWidget {
+  final Plant plant;
+
+  const PlantCard({
+    super.key,
+    required this.plant,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlantDetailPage(plantId: plant.id),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 2),
+              blurRadius: 4,
+            ),
+          ],
+          image: DecorationImage(
+            image: NetworkImage(plant.imageUrl),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.3),
+              BlendMode.darken,
+            ),
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
+                ),
+                child: Text(
+                  plant.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PlantsPage extends StatefulWidget {
+  const PlantsPage({super.key});
+
+  @override
+  State<PlantsPage> createState() => _PlantsPageState();
+}
+
+class _PlantsPageState extends State<PlantsPage> {
+  List<Plant> plants = [];
+  bool isLoading = true;
+  String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPlants();
+  }
+
+  Future<void> _loadPlants() async {
+    try {
+      final String jsonData = await rootBundle.loadString('assets/data.json');
+
+      final List<dynamic> jsonList = json.decode(jsonData);
+
+      final loadedPlants = jsonList.map((item) => Plant.fromJson(item)).toList();
+
+      setState(() {
+        plants = loadedPlants;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        error = 'Error loading plant data: $e';
+        isLoading = false;
+      });
+    }
+  }
+
+  IconData getPlantIcon(String plantName) {
+    final name = plantName.toLowerCase();
+    if (name.contains('marchew')) {
+      return Icons.spa;
+    } else if (name.contains('ogórek')) {
+      return Icons.eco;
+    } else if (name.contains('bazylia')) {
+      return Icons.grass;
+    } else if (name.contains('rzodkiewka')) {
+      return Icons.fiber_manual_record;
+    } else if (name.contains('cebula')) {
+      return Icons.bubble_chart;
+    } else {
+      return Icons.local_florist;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (error != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 60, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(error!, textAlign: TextAlign.center),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _loadPlants,
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Katalog roślin',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Wybierz roślinę, aby dowiedzieć się więcej',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: plants.length,
+                itemBuilder: (context, index) {
+                  final plant = plants[index];
+                  return PlantListItem(
+                    plant: plant,
+                    icon: getPlantIcon(plant.name),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PlantListItem extends StatelessWidget {
+  final Plant plant;
+  final IconData icon;
+
+  const PlantListItem({
+    super.key,
+    required this.plant,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PlantDetailPage(plantId: plant.id),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Icon(
+                  icon,
+                  color: Colors.green,
+                  size: 30,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      plant.name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Season: ${plant.growingSeason}',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Arrow icon
+              const Icon(Icons.arrow_forward_ios, size: 16),
+            ],
+          ),
         ),
       ),
     );
