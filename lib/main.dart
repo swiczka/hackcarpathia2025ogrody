@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackcarpathia2025ogrody/pages/addplant.dart';
+import 'package:hackcarpathia2025ogrody/pages/scanner.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,6 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
         context,
         MaterialPageRoute(builder: (context) => const AddPlant()),
       );
+    } else if(page == 'Skaner'){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Scanner()),
+      );
     }
   }
 
@@ -78,6 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: const Icon(Icons.person),
               title: const Text('Rośliny'),
               onTap: () => _onSelectPage('Rośliny'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Skaner'),
+              onTap: () => _onSelectPage('Skaner'),
             ),
             const Divider(),
             ListTile(
