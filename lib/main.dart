@@ -11,7 +11,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mniam Match',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.grey[300],
         appBarTheme: const AppBarTheme(
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MyHomePage(title: 'Mniam Match'),
+      home: const MyHomePage(title: 'Strona główna'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -89,12 +88,32 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Text(
-          'Aktualna strona: $_selectedPage',
-          style: const TextStyle(fontSize: 24),
+
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Container(
+              width: double.infinity,
+              height: 900,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Roślinki tu bd',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text('eskere'),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
     );
   }
 }
