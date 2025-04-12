@@ -1,0 +1,28 @@
+[
+  {
+    "id": "2",
+    "name": "Marchew",
+    "imageUrl": "https://example.com/images/carrot.jpg",
+    "description": "Marchew to warzywo, które potrzebuje głębokiej, piaszczystej gleby do rozwoju długich korzeni.",
+    "growingSeason": "Wiosna - Jesień",
+    "careInstructions": [
+      "Regularnie podlewać, ale nie dopuszczać do przemoczenia gleby.",
+      "Usuń chwasty, które mogą blokować dostęp do światła.",
+      "Nawozić raz w miesiącu nawozem organicznym."
+    ],
+    "wateringFrequencyDays": 5,
+    "sunlightNeeds": "Średnie",
+    "daysToMaturity": 120,
+    "soilType": "Piaszczysta, dobrze przepuszczalna",
+    "commonPests": [
+      "Larwy muchówek",
+      "Nicienie",
+      "Ślimaki"
+    ],
+    "plantingDate": "2025-04-15",
+    "reminderWatering": true,
+    "reminderCare": true,
+    "reminderFertilizing": true,
+    "notes": "Marchew najlepiej rośnie na głębokiej glebie, unikaj gleby zbyt wilgotnej."
+  }
+]
