@@ -290,21 +290,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 32),
 
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Add to my garden coming soon')),
-                        );
-                      },
-                      icon: const Icon(Icons.add),
-                      label: const Text('Dodaj do mojego ogrodu'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
