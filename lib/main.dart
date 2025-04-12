@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hackcarpathia2025ogrody/models/userplantsstorage.dart';
 import 'dart:convert';
 import 'package:hackcarpathia2025ogrody/pages/addplant.dart';
 import 'package:hackcarpathia2025ogrody/pages/calendar.dart';
@@ -111,6 +112,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Plant> plants = [];
+  List<Plant> userPlants = [];
   bool isLoading = true;
   String? error;
 
@@ -128,8 +130,10 @@ class _HomePageState extends State<HomePage> {
 
       final loadedPlants = jsonList.map((item) => Plant.fromJson(item)).toList();
 
+      final List<Plant> loadedUserPlants = await UserPlantsStorage.loadUserPlants();
       setState(() {
         plants = loadedPlants;
+        userPlants = loadedUserPlants;
         isLoading = false;
       });
     } catch (e) {
@@ -177,6 +181,36 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.blue[100], // możesz dać Colors.blue dla mocniejszego koloru
+                borderRadius: BorderRadius.circular(12),
+              ),
+               child: Row(
+                 children: [
+                  Icon(Icons.sunny, size: 30, color: Colors.yellow[900]),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "14°C",
+                          style: const TextStyle(fontSize: 20, color: Colors.black87),
+                        ),
+                        Text(
+                          "Przewidywane opady",
+                          style: const TextStyle(fontSize: 20, color: Colors.black54),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const Text(
               'Mój ogród',
               style: TextStyle(
@@ -193,9 +227,9 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSpacing: 16,
                   childAspectRatio: 1.0,
                 ),
-                itemCount: plants.length,
+                itemCount: userPlants.length,
                 itemBuilder: (context, index) {
-                  return PlantCard(plant: plants[index]);
+                  return PlantCard(plant: userPlants[index]);
                 },
               ),
             ),
@@ -204,11 +238,17 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AddPlant()),
+                    MaterialPageRoute(builder: (_) => AddPlant()),
                   );
+
+                  final updatedPlants = await UserPlantsStorage.loadUserPlants();
+
+                  setState(() {
+                    userPlants = updatedPlants;
+                  });
                 },
                 icon: const Icon(Icons.add),
                 label: const Text('Dodaj nową roślinę'),
