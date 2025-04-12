@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackcarpathia2025ogrody/pages/addplant.dart';
+import 'package:hackcarpathia2025ogrody/pages/scanner.dart';
 
 void main() {
   runApp(const MyApp());
@@ -89,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month),
               label: 'Kalendarz',
+
             ),
           ],
         ),
