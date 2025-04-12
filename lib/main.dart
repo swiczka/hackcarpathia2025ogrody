@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackcarpathia2025ogrody/pages/addplant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,6 +46,17 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedPage = page;
     });
     Navigator.pop(context);
+
+    if (page == 'Strona Główna') {
+      setState(() {
+        _selectedPage = 'Strona główna';
+      });
+    } else if (page == 'Rośliny') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AddPlant()),
+      );
+    }
   }
 
   @override
@@ -60,17 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               leading: const Icon(Icons.favorite),
               title: const Text('Strona Główna'),
-              onTap: () => _onSelectPage('Matches'),
+              onTap: () => _onSelectPage('Strona Główna'),
             ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Rośliny'),
-              onTap: () => _onSelectPage('Partner'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.smartphone),
-              title: const Text('Dodaj Nową Roślinkę!'),
-              onTap: () => _onSelectPage('One phone'),
+              onTap: () => _onSelectPage('Rośliny'),
             ),
             const Divider(),
             ListTile(
