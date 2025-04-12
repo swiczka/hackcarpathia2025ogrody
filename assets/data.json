@@ -42,8 +42,8 @@
     "soilType": "Lekka, żyzna gleba",
     "commonPests": [
       "Przędziorki",
-      "Aphids",
-      "Cucumber beetles"
+      "Mszyce",
+      "Chrząszcze ogórkowe"
     ],
     "plantingDate": "2025-04-10",
     "reminderWatering": true,
@@ -67,9 +67,9 @@
     "daysToMaturity": 30,
     "soilType": "Lekka, dobrze przepuszczalna gleba",
     "commonPests": [
-      "Aphids",
-      "Slugs",
-      "Whitefly"
+      "Mszyce",
+      "Ślimaki",
+      "Mączliki"
     ],
     "plantingDate": "2025-04-05",
     "reminderWatering": true,
@@ -126,5 +126,31 @@
     "reminderCare": false,
     "reminderFertilizing": true,
     "notes": "Cebula preferuje glebę o neutralnym pH i regularne podlewanie."
+  },
+  {
+    "id": "7",
+    "name": "Papryka",
+    "imageUrl": "https://a.allegroimg.com/original/11a641/f5e9730b421782b9b88e69672618/PAPRYKA-CZERWONA-1kg-Rodzaj-papryki",
+    "description": "Papryka to roślina wymagająca dużo słońca i ciepła, idealna do upraw w cieplejszych miesiącach.",
+    "growingSeason": "Wiosna - Lato",
+    "careInstructions": [
+      "Podlewać regularnie, nie dopuszczając do przesuszenia.",
+      "Usuwać uschnięte liście i pędy.",
+      "Nawozić co 2 tygodnie nawozem z dużą ilością potasu."
+    ],
+    "wateringFrequencyDays": 3,
+    "sunlightNeeds": "Wysokie",
+    "daysToMaturity": 90,
+    "soilType": "Odżywcza i przepuszczalna",
+    "commonPests": [
+      "Mszyce",
+      "Mączliki",
+      "Przędziorki"
+    ],
+    "plantingDate": "2025-04-10",
+    "reminderWatering": true,
+    "reminderCare": true,
+    "reminderFertilizing": true,
+    "notes": "Papryka lubi ciepło i słońce, dobrze rośnie w szklarniach lub na nasłonecznionych stanowiskach."
   }
 ]

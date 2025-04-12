@@ -63,7 +63,7 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Loading...'),
+          title: const Text('Ładowanie...'),
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -86,7 +86,7 @@ class _PlantDetailPageState extends State<PlantDetailPage> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _loadPlantData,
-                  child: const Text('Retry'),
+                  child: const Text('Spróbuj od nowa'),
                 ),
               ],
             ),
@@ -117,13 +117,13 @@ class VegetableDetailPage extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.delete),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Add to my garden coming soon')),
+                const SnackBar(content: Text('Usunięto roślinę!')),
               );
             },
-            tooltip: 'Add to my garden',
+            tooltip: 'Usuń z ogrodu',
           ),
         ],
       ),
@@ -181,7 +181,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  const SectionHeader(title: 'Description'),
+                  const SectionHeader(title: 'Opis'),
                   const SizedBox(height: 8),
                   Text(
                     plant.description,
@@ -190,7 +190,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  const SectionHeader(title: 'Growing Information'),
+                  const SectionHeader(title: 'Informacje o hodowaniu'),
                   const SizedBox(height: 16),
 
                   Card(
@@ -202,8 +202,8 @@ class VegetableDetailPage extends StatelessWidget {
                           InfoRow(
                             icon: Icons.water_drop,
                             iconColor: Colors.blue,
-                            title: 'Watering',
-                            value: 'Every ${plant.wateringFrequencyDays} days',
+                            title: 'Podlewanie',
+                            value: 'Co ${plant.wateringFrequencyDays} dni',
                           ),
 
                           const Divider(height: 24),
@@ -211,7 +211,7 @@ class VegetableDetailPage extends StatelessWidget {
                           InfoRow(
                             icon: Icons.wb_sunny,
                             iconColor: Colors.orange,
-                            title: 'Sunlight',
+                            title: 'Naświetlenie',
                             value: plant.sunlightNeeds,
                           ),
 
@@ -220,8 +220,8 @@ class VegetableDetailPage extends StatelessWidget {
                           InfoRow(
                             icon: Icons.calendar_today,
                             iconColor: Colors.purple,
-                            title: 'Days to Maturity',
-                            value: '${plant.daysToMaturity} days',
+                            title: 'Czas do dojrzenia',
+                            value: '${plant.daysToMaturity} dni',
                           ),
 
                           const Divider(height: 24),
@@ -229,7 +229,7 @@ class VegetableDetailPage extends StatelessWidget {
                           InfoRow(
                             icon: Icons.landscape,
                             iconColor: Colors.brown,
-                            title: 'Soil',
+                            title: 'Gleba',
                             value: plant.soilType,
                           ),
                         ],
@@ -239,7 +239,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  const SectionHeader(title: 'Care Instructions'),
+                  const SectionHeader(title: 'Instrukcje do opieki'),
                   const SizedBox(height: 16),
 
                   Card(
@@ -272,7 +272,7 @@ class VegetableDetailPage extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  const SectionHeader(title: 'Common Pests & Diseases'),
+                  const SectionHeader(title: 'Powszechne choroby i pasożyty'),
                   const SizedBox(height: 16),
 
                   Wrap(

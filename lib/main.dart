@@ -182,6 +182,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       width: double.infinity,
       height: double.infinity,
+
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -189,33 +190,70 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.blue[100], // możesz dać Colors.blue dla mocniejszego koloru
-                borderRadius: BorderRadius.circular(12),
-              ),
-               child: Row(
-                 children: [
-                  Icon(Icons.sunny, size: 30, color: Colors.yellow[900]),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "14°C",
-                          style: const TextStyle(fontSize: 20, color: Colors.black87),
-                        ),
-                        Text(
-                          "Przewidywane opady",
-                          style: const TextStyle(fontSize: 20, color: Colors.black54),
-                        ),
-                      ],
-                    ),
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
+               child: Column(
+                 children: [
+                   Row(
+                     children: [
+                      Icon(Icons.sunny, size: 30, color: Colors.yellow[900]),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "14°C",
+                              style: const TextStyle(fontSize: 16, color: Colors.black87),
+                            ),
+                            Text(
+                              "Przewidywane opady",
+                              style: const TextStyle(fontSize: 16, color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                                 ),
+                   Padding(
+                     padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                     child: Row(
+                       children: [
+
+                         Icon(Icons.circle, size: 30, color: Colors.white60),
+                         const SizedBox(width: 8),
+                         Expanded(
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                             children: [
+                               Text(
+                                 "",
+                                 style: const TextStyle(fontSize: 16, color: Colors.black87),
+                               ),
+                               Text(
+                                 "Pełnia księżyca",
+                                 style: const TextStyle(fontSize: 16, color: Colors.black54),
+                               ),
+                             ],
+                           ),
+                         ),
+                       ],
+                     ),
+                   ),
+                 ],
+               ),
             ),
             const Text(
               'Mój ogród',
