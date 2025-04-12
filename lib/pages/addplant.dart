@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:hackcarpathia2025ogrody/models/userplantsstorage.dart';
 import 'package:intl/intl.dart';
 
 import '../models/plant.dart';
@@ -283,9 +284,34 @@ class _AddPlantState extends State<AddPlant> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // Tutaj kod zapisujący dane
+                        try {
+                          Plant newPlant = Plant(
+                            id: selectedPlant?.id ?? "",
+                            name: selectedPlant?.name ?? "",
+                            imageUrl: selectedPlant?.imageUrl ?? "",
+                            description: selectedPlant?.description ?? "",
+                            growingSeason: selectedPlant?.growingSeason ?? "",
+                            careInstructions: selectedPlant?.careInstructions ?? [],
+                            wateringFrequencyDays: selectedPlant?.wateringFrequencyDays ?? 0,
+                            sunlightNeeds: selectedPlant?.sunlightNeeds ?? "",
+                            daysToMaturity: selectedPlant?.daysToMaturity ?? 0,
+                            soilType: selectedPlant?.soilType ?? "",
+                            commonPests: selectedPlant?.commonPests ?? [],
+                            plantingDate: _plantingDate ?? DateTime.now(),
+                            reminderWatering: _reminderWatering ?? true,
+                            reminderCare: _reminderCare ?? true,
+                            reminderFertilizing: _reminderFertilizing ?? true,
+                            notes: _notes ?? "",
+                          );
+                          UserPlantsStorage.addPlant(newPlant);
+
+                        } catch(error){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Błąd dodawania!')),
+                          );
+                        }
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Roślina została dodana')),
                         );

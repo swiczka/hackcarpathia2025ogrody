@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 2;
 
   final List<Widget> _pages = [
-    const Text('Aparat'),
+    const Scanner(),
     const PlantsPage(),
     const HomePage(),
     CalendarPage(),
@@ -205,9 +205,9 @@ class _HomePageState extends State<HomePage> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // Navigate to add plant page
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Add plant feature coming soon')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddPlant()),
                   );
                 },
                 icon: const Icon(Icons.add),
