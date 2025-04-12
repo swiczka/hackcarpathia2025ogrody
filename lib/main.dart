@@ -40,29 +40,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _selectedPage = 'Strona główna';
 
-  void _onSelectPage(String page) {
+  int _selectedIndex = 2;  
+
+
+  final List<Widget> _pages = [
+    const Text('Aparat'),
+    const Text('Rośliny'),
+    const HomePage(),
+    const Text('Kalendarz'),
+  ];
+
+  void _onItemTapped(int index) {
     setState(() {
-      _selectedPage = page;
+      _selectedIndex = index;
     });
-    Navigator.pop(context);
-
-    if (page == 'Strona Główna') {
-      setState(() {
-        _selectedPage = 'Strona główna';
-      });
-    } else if (page == 'Rośliny') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AddPlant()),
-      );
-    } else if(page == 'Skaner'){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Scanner()),
-      );
-    }
   }
 
   @override
@@ -71,74 +63,84 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.favorite),
-              title: const Text('Strona Główna'),
-              onTap: () => _onSelectPage('Strona Główna'),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.grey,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.camera),
+              label: 'Skanuj!',
             ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Rośliny'),
-              onTap: () => _onSelectPage('Rośliny'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_tree),
+              label: 'Rośliny',
             ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: const Text('Skaner'),
-              onTap: () => _onSelectPage('Skaner'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Strona Główna',
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text('Exit'),
-              onTap: () => _onSelectPage('Exit'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month),
+              label: 'Kalendarz',
+
             ),
           ],
         ),
       ),
+    );
+  }
+}
 
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 8),
-              const SizedBox(height: 16),
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      offset: Offset(0, 2),
-                      blurRadius: 4,
-                    ),
-                  ],
-                ),
-                height: 120,
-                width: double.infinity,
-                child: Center(
-                  child: Text(
-                    'RURA 1',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 8),
+            const SizedBox(height: 16),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              height: 120,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  'RURA 1',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
